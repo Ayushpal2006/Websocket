@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Socket.IO Client</title>
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+  </head>
+  <body>
+    <h1>Socket.IO Client</h1>
+    <h1>WebSocket Client</h1>
+    <div id="messages"></div>
+    <input type="text" id="messageInput" placeholder="Type a message..." />
+    <button onclick="sendMessage()">Send Message</button>
+
+    <script>
+      const socket = io("http://localhost:8080");
+
+      // Listen for messages from the server
+      socket.on("message", (message) => {
+        console.log("Message from server:", message);
+      });
+
+      // Send a message to the server
+      function sendMessage() {
+        const messageInput = document.getElementById("messageInput");
+        const message = messageInput.value;
+
+        // Display the sent message on the client
+        const messagesDiv = document.getElementById("messages");
+        const newMessage = document.createElement("p");
+        newMessage.textContent = "You: " + message;
+        messagesDiv.appendChild(newMessage);
+
+        // Send a message to the server
+        socket.emit("message", message);
+
+        // Clear input field
+        messageInput.value = '';
+      }
+    </script>
+  </body>
+</html>
